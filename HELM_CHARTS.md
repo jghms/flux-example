@@ -35,9 +35,15 @@ The script will:
 - Upload it to the ChartMuseum server in your cluster
 - Display the chart name and version
 
-**Note:** After pushing with this method, you need to restart the ChartMuseum pod for it to pick up the new chart:
+**Note:** After pushing with this method, you need to **delete the cache file and restart** the ChartMuseum pod for it to pick up new charts:
 ```bash
+kubectl exec -n helm-repo deployment/helm-repo -- rm -f /charts/index-cache.yaml
 kubectl delete pod -n helm-repo -l app=helm-repo
+```
+
+Then reconcile Flux to pick up the changes:
+```bash
+flux reconcile source helm demo-repo -n flux-system
 ```
 
 ## Method 2: Using helm cm-push Plugin
@@ -70,9 +76,15 @@ helm cm-push my-app local --force
 
 The `--force` flag allows overwriting existing chart versions.
 
-**Note:** This method also requires restarting the ChartMuseum pod to regenerate the index:
+**Note:** This method also requires **deleting the cache file and restarting** the ChartMuseum pod to regenerate the index:
 ```bash
+kubectl exec -n helm-repo deployment/helm-repo -- rm -f /charts/index-cache.yaml
 kubectl delete pod -n helm-repo -l app=helm-repo
+```
+
+Then reconcile Flux to pick up the changes:
+```bash
+flux reconcile source helm demo-repo -n flux-system
 ```
 
 ### 4. Use the chart in a HelmRelease
