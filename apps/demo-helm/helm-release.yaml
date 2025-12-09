@@ -1,13 +1,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: demo-app-helm
+  name: test-app-helm
   namespace: demo-helm
 spec:
   interval: 10s
   chart:
     spec:
-      chart: demo-app
+      chart: test-app
       sourceRef:
         kind: HelmRepository
         name: demo-repo
