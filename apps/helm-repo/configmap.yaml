@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: helm-repo-data
   namespace: helm-repo
+binaryData:
+  demo-app-0.1.0.tgz: H4sIFAAAAAAA/ykAK2FIUjBjSE02THk5NWIzVjBkUzVpWlM5Nk9WVjZNV2xqYW5keVRRbz1IZWxtAOxYTW/jNhDNmb9i4J6tUIrlXejWJkBbYLswusVeC640tolSJJekjBqp/3tByfqylTrYujKK6F0cUTOjITmP88IMczVnWt8/bplxwZ7l4u7aoJTS5WJR/lJKT39pRB/uwjgMlyFdRN4ujJbLxR3Qq2cygMI6Zu7ov/7W6eT+J2Caf0ZjuZIJ7CLCtG4eZ2FAZyRDmxquXTn0PViea4HgywaY1oKnzL+Cn1DkkPoaIpLlmEBdWMTtNSZdW7Krv0CDMKDk1kvwptHwf8dEgfY/OQAu8X8RvTvh/0P4EE38HwPfwROuWSEcVAUAa2Va7hosWfuoCukSiAjhOdtgQgAMamW5U2afgNxw+ScBcGyTgGAOrSMAuhBipQRP9wn8vP6o3MqgRekIsWh2PC3DVIfDB8WyH5hgMkXjPZVxCbynZUizQbeqB4hBqwqToq1y+FqgdeXfADnmZTaz5eIXPiuHUl34Y4zS3D8LnvMz4zB637eOSutbb8toaPjvMNfl3t3/vkWh0djA6escBZf7f3TC/ziKlxP/x8Dz8xwyXHOJMKtrIfAdfAbzw4E0J4G3Q5nB4UDIoM+6EKL1e34GLlNRZOdhAyjfN+FuvQJvGwP8z1ALtc9RXuvfgQv8j6JlfML/JQ0fJv6Pga7+Z1rb+11I/uAyS+CpKQOSo2MZc8z3zkrdD/K7PQJKjle2VrO0cgh+RYHMYvCxHvZWVmN6FBReatjK9HOlRrv6owppUWDqlDm2cebS7Qf2BcWxr4OfxAvp9VKry72WA+0EPUQv5KuDAtSzKfWEko5xiaYJND+unj9Q69CVooJZZ9blUNAqLDgckrPXjm3gcJj146w6muvMoxVkdbYeXmx1Zjpv065UVyfMUbcFrSjrBqpLY+tcO7ueXmsHu7qtRi3Jett/9A5ql6Cygr/ga6Ec9r9/lHD/HCDVxbB3Vx6+KqfK4ZszOrq/kI/gO5Ro7cqoL9hNyi/vj+j6eWrmtgnc98fK7evtBgCX3HEmnlCw/SdMlcxsAiHtWGg0XGVD7wyyjI+VU/xySvEkGa6Hgf7fnNrXugy4pP/D8Ez/x/F0/zcKevd/detvGvRw5x9u5LeeyYRvwQD/6zZ/tavAS/yPz+7/4ujddP83Cgb5/6mqgFF0f3UDOKQy9xqHNP8rtXija+egjXIqVSKB3x5XpNUhAx/VHVHbvXt8lQru6N9bb+uECRMmXMTfAQAA//9TVzw1ACAAAA==
 data:
   index.yaml: |
     apiVersion: v1
@@ -16,6 +18,6 @@ data:
         name: demo-app
         type: application
         urls:
-        - http://helm-repo:8080/demo-app-0.1.0.tgz
+        - http://helm-repo.helm-repo.svc.cluster.local:8080/demo-app-0.1.0.tgz
         version: 0.1.0
     generated: "2025-12-09T21:37:55.985386+01:00"
