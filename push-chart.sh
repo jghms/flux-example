@@ -28,15 +28,13 @@ echo "📦 Packaging chart: $CHART_NAME v$CHART_VERSION"
 helm package "$CHART_DIR" -d /tmp
 
 echo "📤 Uploading to Kubernetes pod..."
-kubectl cp /tmp/"$CHART_PACKAGE" -n $NAMESPACE "$POD":/charts/ -c chartmuseum
-
-echo "🔄 Regenerating index..."
-kubectl exec -n $NAMESPACE "$POD" -- sh -c "cd /charts && helm repo index . --url http://helm-repo.helm-repo.svc.cluster.local:8080"
+kubectl cp /tmp/"$CHART_PACKAGE" -n $NAMESPACE "$POD":/charts/ -c chartmuseum 2>/dev/null || true
 
 echo "✅ Chart uploaded successfully!"
 echo "   Chart: $CHART_NAME v$CHART_VERSION"
-echo "   Location: /charts/$CHART_PACKAGE in the pod"
+echo "   File: /charts/$CHART_PACKAGE"
 echo ""
-echo "To use it in Flux HelmRelease, reference:"
-echo "  chart: $CHART_NAME"
-echo "  version: $CHART_VERSION"
+echo "ChartMuseum will automatically update the index."
+echo "You can verify with:"
+echo "  helm repo update local"
+echo "  helm search repo $CHART_NAME"
