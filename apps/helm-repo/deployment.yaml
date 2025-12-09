@@ -27,7 +27,7 @@ spec:
           mountPath: /init-charts
       containers:
       - name: chartmuseum
-        image: ghcr.io/helm/chartmuseum:v0.16.0
+        image: ghcr.io/helm/chartmuseum:v0.15.0
         args:
           - --port=8080
           - --storage=local
