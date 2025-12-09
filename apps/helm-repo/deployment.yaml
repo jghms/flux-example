@@ -27,13 +27,13 @@ spec:
           mountPath: /init-charts
       containers:
       - name: chartmuseum
-        image: ghcr.io/helm/chartmuseum:v0.15.0
+        image: ghcr.io/helm/chartmuseum:latest
         args:
           - --port=8080
           - --storage=local
           - --storage-local-rootdir=/charts
-          - --allow-overwrite=true
-          - --disable-metrics=true
+          - --allow-overwrite
+          - --enable-api
         ports:
         - containerPort: 8080
           name: http
