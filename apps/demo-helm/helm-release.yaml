@@ -13,6 +13,10 @@ spec:
         name: demo-repo
         namespace: flux-system
   values:
+    ingress:
+      enabled: true
+      annotations: {}
+        kubernetes.io/ingress.class: nginx
     replicaCount: 2
     image:
       repository: nginx
