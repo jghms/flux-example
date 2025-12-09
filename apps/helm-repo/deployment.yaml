@@ -33,7 +33,6 @@ spec:
           - --storage=local
           - --storage-local-rootdir=/charts
           - --allow-overwrite
-          - --enable-api
         ports:
         - containerPort: 8080
           name: http
