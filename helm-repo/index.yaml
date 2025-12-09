@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  demo-app:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2025-12-09T21:37:55.985585+01:00"
+    description: A simple demo application Helm chart
+    digest: bd4ad349936284694f06104534213455ef671214e86a8707109a3bac3e2ad255
+    name: demo-app
+    type: application
+    urls:
+    - http://helm-repo:8080/demo-app-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-12-09T21:37:55.985386+01:00"
