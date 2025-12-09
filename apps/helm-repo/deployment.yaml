@@ -13,24 +13,60 @@ spec:
       labels:
         app: helm-repo
     spec:
+      initContainers:
+      - name: init-charts
+        image: alpine:3.18
+        command: ["/bin/sh"]
+        args: ["/init/init.sh"]
+        volumeMounts:
+        - name: charts
+          mountPath: /charts
+        - name: init-script
+          mountPath: /init
+        - name: demo-chart
+          mountPath: /init-charts
       containers:
-      - name: server
-        image: python:3.11-alpine
-        command: ["python", "-m", "http.server", "8080", "--directory", "/repo"]
+      - name: chartmuseum
+        image: ghcr.io/helm/chartmuseum:v0.15.0
+        args:
+          - --port=8080
+          - --storage=local
+          - --storage-local-rootdir=/charts
+          - --allow-overwrite=true
         ports:
         - containerPort: 8080
           name: http
         volumeMounts:
-        - name: repo-data
-          mountPath: /repo
+        - name: charts
+          mountPath: /charts
         resources:
           requests:
-            memory: "32Mi"
-            cpu: "50m"
-          limits:
             memory: "64Mi"
             cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
       volumes:
-      - name: repo-data
+      - name: charts
+        persistentVolumeClaim:
+          claimName: helm-repo-storage
+      - name: init-script
         configMap:
-          name: helm-repo-data
+          name: helm-repo-init
+          defaultMode: 0755
+      - name: demo-chart
+        configMap:
+          name: helm-repo-demo-chart
+          defaultMode: 0644

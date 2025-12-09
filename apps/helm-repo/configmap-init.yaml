@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: helm-repo-init
+  namespace: helm-repo
+data:
+  init.sh: |
+    #!/bin/sh
+    set -e
+    
+    # Copy pre-built charts to the persistent volume if they don't exist
+    if [ ! -f /charts/demo-app-0.1.0.tgz ]; then
+      echo "Initializing chart repository with demo-app chart..."
+      mkdir -p /charts
+      cp /init-charts/*.tgz /charts/ 2>/dev/null || true
+    fi
+    
+    echo "Chart repository initialized"
