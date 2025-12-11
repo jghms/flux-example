@@ -24,7 +24,7 @@ spec:
         - -c
         - |
           echo "Waiting for ChartMuseum to be ready..."
-          until curl -sf http://chartmuseum-chartmuseum:8080/health > /dev/null; do
+          until curl -sf http://chartmuseum:8080/index.yaml > /dev/null; do
             echo "ChartMuseum not ready, waiting..."
             sleep 5
           done
@@ -38,7 +38,7 @@ spec:
         - |
           echo "Uploading demo-app chart..."
           cd /charts
-          curl -X POST --data-binary "@demo-app-0.1.0.tgz" http://chartmuseum-chartmuseum:8080/api/charts
+          curl -X POST --data-binary "@demo-app-0.1.0.tgz" http://chartmuseum:8080/api/charts
           echo "Chart uploaded successfully!"
         volumeMounts:
         - name: charts

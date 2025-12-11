@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10s
-  url: http://chartmuseum-chartmuseum.helm-repo.svc.cluster.local:8080
+  url: http://chartmuseum.helm-repo.svc.cluster.local:8080
