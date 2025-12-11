@@ -35,16 +35,12 @@ The script will:
 - Upload it to the ChartMuseum server in your cluster
 - Display the chart name and version
 
-**Note:** After pushing with this method, you need to **delete the cache file and restart** the ChartMuseum pod for it to pick up new charts:
-```bash
-kubectl exec -n helm-repo deployment/helm-repo -- rm -f /charts/index-cache.yaml
-kubectl delete pod -n helm-repo -l app=helm-repo
-```
-
-Then reconcile Flux to pick up the changes:
+**Note:** After pushing with this method, ChartMuseum automatically detects new charts. Simply run:
 ```bash
 flux reconcile source helm demo-repo -n flux-system
 ```
+
+This tells Flux to refresh the chart index from ChartMuseum.
 
 ## Method 2: Using helm cm-push Plugin
 
@@ -76,13 +72,7 @@ helm cm-push my-app local --force
 
 The `--force` flag allows overwriting existing chart versions.
 
-**Note:** This method also requires **deleting the cache file and restarting** the ChartMuseum pod to regenerate the index:
-```bash
-kubectl exec -n helm-repo deployment/helm-repo -- rm -f /charts/index-cache.yaml
-kubectl delete pod -n helm-repo -l app=helm-repo
-```
-
-Then reconcile Flux to pick up the changes:
+**Note:** ChartMuseum automatically detects new charts pushed via the API. Simply reconcile Flux:
 ```bash
 flux reconcile source helm demo-repo -n flux-system
 ```
@@ -131,19 +121,21 @@ helm search repo test-app
 
 ## How It Works
 
-- `ChartMuseum` runs in the `helm-repo` namespace and serves charts via HTTP
-- The `push-chart.sh` script uses `kubectl cp` to upload `.tgz` files directly to the pod
-- Charts are stored in a `PersistentVolume` for persistence
-- The `HelmRepository` CRD in Flux automatically syncs the index
+- **ChartMuseum HelmRelease**: The official ChartMuseum Helm chart is deployed via Flux HelmRelease in the `helm-repo` namespace
+- **Persistent Storage**: Charts are stored in a 1Gi PersistentVolume for persistence across restarts
+- **API Enabled**: ChartMuseum runs with DISABLE_API=false, allowing `helm cm-push` to work
+- **Auto-indexing**: ChartMuseum automatically updates the index when charts are pushed via the API
+- **Flux Integration**: The `HelmRepository` CRD automatically syncs the index every 10 seconds
 
 ## Repository URL
 
 Inside the cluster, the repository is available at:
 ```
-http://helm-repo.helm-repo.svc.cluster.local:8080
+http://chartmuseum.helm-repo.svc.cluster.local:8080
 ```
 
 Locally (with port-forward):
 ```
-http://localhost:8080
+kubectl port-forward svc/chartmuseum -n helm-repo 8080:8080
+# Then access at http://localhost:8080
 ```
