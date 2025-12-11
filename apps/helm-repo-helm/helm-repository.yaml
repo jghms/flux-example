@@ -1,8 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: demo-repo
+  name: chartmuseum
   namespace: flux-system
 spec:
-  interval: 10s
-  url: http://chartmuseum-chartmuseum.helm-repo.svc.cluster.local:8080
+  interval: 1h
+  url: https://chartmuseum.github.io/charts
